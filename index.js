@@ -46,6 +46,7 @@ async function TrackerGetRates() {
     );
 
     console.log("Gas unit rate today: " + GasUnitToday);
+    document.querySelector('#trackerGasToday').innerText = GasUnitToday
     console.log("Elec unit rate today: " + ElecUnitToday);
     console.log("Gas unit rate tomorrow: " + GasUnitTomorrow);
     console.log("Elec unit rate tomorrow: " + ElecUnitTomorrow);
@@ -59,3 +60,5 @@ async function TrackerGetRates() {
 
 // Run the rule
 TrackerGetRates();
+
+

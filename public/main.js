@@ -1,107 +1,84 @@
-// document.querySelector("button").addEventListener("click", getFetch);
+// document.addEventListener("DOMContentLoaded", function() {
+//   async function getTrackerRates() {
+//   const baseUrl = "https://octopus.energy/api/v1/tracker";
+//   const tariff = "G-1R-SILVER-2017-1-N";
+//   const endpoint = "daily/current/0/1";
 
-// function getFetch() {
-//   const choice = document.querySelector("input").value.toLowerCase();
-//   // console.log(choice)
-//   const url = `process.env.API_BASE_URL/${choice}`;
+//   const today = new Date().toISOString().split("T")[0];
+//   const tomorrow = new Date();
+//   tomorrow.setDate(tomorrow.getDate() + 1);
+//   const tomorrowDateString = tomorrow.toISOString().split("T")[0];
 
-//   fetch(url)
-//     .then((res) => res.json()) // parse response as JSON
-//     .then((data) => {
-//       document.querySelector("#outputs").style.visibility = "visible";
-//       // console.log(data)
-//       document.querySelector("#charName").innerText = data.results[0].name;
-//       document.querySelector("#charImg").src = data.results[0].image;
-//       document.querySelector("#stat").innerText = data.results[0].status;
-//       document.querySelector("#species").innerText = data.results[0].species;
-//       document.querySelector("#gender").innerText = data.results[0].gender;
-//       document.querySelector("#orig").innerText = data.results[0].origin.name;
-//       document.querySelector("#loc").innerText = data.results[0].location.name;
+//   try {
+//     const [gasToday, elecToday, gasTomorrow, elecTomorrow] = await Promise.all([
+//       fetch(`${baseUrl}/${tariff}/${endpoint}`).then((response) =>
+//         response.json()
+//       ),
+//       fetch(`${baseUrl}/E-1R-SILVER-2017-1-N/${endpoint}`).then((response) =>
+//         response.json()
+//       ),
+//       fetch(`${baseUrl}/${tariff}/${endpoint}`).then((response) =>
+//         response.json()
+//       ),
+//       fetch(`${baseUrl}/E-1R-SILVER-2017-1-N/${endpoint}`).then((response) =>
+//         response.json()
+//       ),
+//     ]);
 
-//       if (data.results[0].type === "" || data.results[0].type === null) {
-//         document.querySelector("#type").remove();
-//       } else {
-//         document.querySelector("#ty").innerText = data.results[0].type;
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(`error ${err}`);
-//     });
+//     const gasUnitToday = parseFloat(
+//       gasToday.periods.find((period) => period.date === today).unit_rate
+//     );
+//     const elecUnitToday = parseFloat(
+//       elecToday.periods.find((period) => period.date === today).unit_rate
+//     );
+//     const gasUnitTomorrow = parseFloat(
+//       gasTomorrow.periods.find((period) => period.date === tomorrowDateString)
+//         .unit_rate
+//     );
+//     const elecUnitTomorrow = parseFloat(
+//       elecTomorrow.periods.find((period) => period.date === tomorrowDateString)
+//         .unit_rate
+//     );
+
+//     console.log("Gas unit rate today: " + gasUnitToday);
+//     console.log("Elec unit rate today: " + elecUnitToday);
+//     console.log("Gas unit rate tomorrow: " + gasUnitTomorrow);
+//     console.log("Elec unit rate tomorrow: " + elecUnitTomorrow);
+//     document.querySelector("#trackerGasToday").innerText = gasUnitToday;
+//     document.querySelector("#trackerElecToday").innerText = elecUnitToday;
+//     //document.querySelector("#trackerGasTomorrow").textContent =
+//       //"Gas unit rate tomorrow: " + gasUnitTomorrow;
+//     //document.querySelector("#trackerElecTomorrow").textContent =
+//       //"Elec unit rate tomorrow: " + elecUnitTomorrow;
+//   } catch (error) {
+//     console.error("HTTP request error:", error);
+//   }
 // }
 
-const axios = require("axios");
+// getTrackerRates();
+// });
 
-async function sendHttpGetRequest(url) {
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (error) {
-    console.error("HTTP request error:", error);
-    return null;
+//document.querySelector("button").addEventListener("click", getFetch);
+
+function getTracker() {
+
+  const baseUrl = "https://octopus.energy/api/v1/tracker";
+  const tariff = "G-1R-SILVER-2017-1-N";
+  const endpoint = "daily/current/0/1";
+  const url = baseUrl + tariff + endpoint;
+
+  fetch(url)
+    // .then((res) => res.json()) // parse response as JSON
+    .then((data) => {
+      console.log(data)
+
+    //   if (data.results[0].type === "" || data.results[0].type === null) {
+    //     document.querySelector("#type").remove();
+    //   } else {
+    //     document.querySelector("#ty").innerText = data.results[0].type;
+    //   }
+    })
+    .catch((err) => {
+      console.log(`error ${err}`);
+    });
   }
-}
-
-function updateItems(
-  GasUnitToday,
-  GasUnitTomorrow,
-  ElecUnitToday,
-  ElecUnitTomorrow
-) {
-  // Implement the logic to update the items here
-  // e.g., GasUnit0.postUpdate(GasUnitToday);
-}
-
-async function TrackerGetRates() {
-  // Get today's rates
-  var today = new Date();
-  var dateString = today.toISOString().split("T")[0];
-
-  // Get Gas Rate Today
-  var TrackerJSONgas = await sendHttpGetRequest(
-    "https://octopus.energy/api/v1/tracker/G-1R-SILVER-2017-1-B/daily/current/0/1/"
-  );
-  var GasUnitToday = parseFloat(
-    TrackerJSONgas.periods.find(function (period) {
-      return period.date === dateString;
-    }).unit_rate
-  );
-  console.log("Gas unit rate today: " + GasUnitToday);
-
-  // Get Electricity Rate Today
-  var TrackerJSONelec = await sendHttpGetRequest(
-    "https://octopus.energy/api/v1/tracker/E-1R-SILVER-2017-1-B/daily/current/0/1/"
-  );
-  var ElecUnitToday = parseFloat(
-    TrackerJSONelec.periods.find(function (period) {
-      return period.date === dateString;
-    }).unit_rate
-  );
-  console.log("Elec unit rate today: " + ElecUnitToday);
-
-  // Get tomorrow's rates
-  var tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  var tomorrowDateString = tomorrow.toISOString().split("T")[0];
-
-  // Get Gas Rate Tomorrow
-  var GasUnitTomorrow = parseFloat(
-    TrackerJSONgas.periods.find(function (period) {
-      return period.date === tomorrowDateString;
-    }).unit_rate
-  );
-  console.log("Gas unit rate tomorrow: " + GasUnitTomorrow);
-
-  // Get Electricity Rate Tomorrow
-  var ElecUnitTomorrow = parseFloat(
-    TrackerJSONelec.periods.find(function (period) {
-      return period.date === tomorrowDateString;
-    }).unit_rate
-  );
-  console.log("Elec unit rate tomorrow: " + ElecUnitTomorrow);
-
-  // Update the items
-  updateItems(GasUnitToday, GasUnitTomorrow, ElecUnitToday, ElecUnitTomorrow);
-}
-
-// Run the rule
-TrackerGetRates();
