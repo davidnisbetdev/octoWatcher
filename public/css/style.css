@@ -54,3 +54,108 @@ main {
     border-radius: 32px;
     padding: 10px 25px;
 }
+
+.titleCardTracker {
+  width: 100%;
+  display: flex;
+}
+
+.titleCardTracker > .mainTitle {
+  width: 85%;
+  margin-right: 0;
+}
+
+.titleCardTracker > section {
+  width: 15%;
+}
+
+.trackerDropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.trackerDropdown > button {
+  width: 100%;
+  height: 60px;
+  border: 0;
+  border-radius: 32px;
+  font-family: inherit;
+  font-size: 17px;
+  background: green;
+}
+
+.trackerDropdown > .ddContent {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #f7f7f7
+}
+
+.trackerDropdown > .ddContent::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  right: 10%;
+  width: 80%;
+  height: 1px;
+  transform: scaleX(0);
+  background: rgb(255 255 255 / 30%);
+  transition: 0.3s;
+}
+
+.trackerDropdown:hover > .ddContent::after {
+  transform: scaleX(1);
+}
+
+.trackerDropdown > .ddContent > span:last-child {
+  margin-left: auto;
+  transition: 0.3s;
+}
+
+.trackerDropdown:hover > .ddContent > span:last-child {
+  rotate: -180deg;
+}
+
+.trackerDropdown > .ddMenu {
+  position: absolute;
+  z-index: 1;
+  top: -6px;
+  left: 50%;
+  display: grid;
+  width: 110%;
+  padding: 70px 0 6px;
+  border-radius: 6px;
+  translate: -50% 0;
+  visibility: hidden;
+  opacity: 0;
+  scale: 0.85;
+  background: linear-gradient(#ea8d8d, #a890fe);
+  transition: 0.3s;
+}
+
+.trackerDropdown:hover > .ddMenu {
+  visibility: visible;
+  opacity: 1;
+  scale: 1;
+}
+
+.trackerDropdown > .ddMenu > a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f7f7f7;
+  font-size: 14px;
+  padding: 0 24px;
+}
+
+.trackerDropdown > .ddMenu > a:hover {
+  background: rgb(0 0 0 /10%);
+}
